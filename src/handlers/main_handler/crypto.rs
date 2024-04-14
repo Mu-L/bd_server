@@ -33,7 +33,11 @@ pub fn decrypt(data: &Vec<u8>, key: &String) -> Result<RequestData, ()> {
 
     match from_str(&de) {
         Ok(v) => Ok(v),
-        Err(_) => Err(()),
+        Err(_) => {
+            error!("Deserialize data Failed");
+            debug!("Error data: {}", de);
+            Err(())
+        }
     }
 }
 

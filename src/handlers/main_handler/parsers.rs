@@ -53,8 +53,11 @@ pub fn par_url(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
     let path = handler.server_data.update_url.clone();
     let path = Path::new(&path);
     let name = match path.file_name() {
-        Some(s) => String::from(s),
-        Err(_) => return Err(()),
+        Some(s) => String::from(match s.to_str() {
+            Some(s) => s,
+            None => return Err(()),
+        }),
+        None => return Err(()),
     };
     let data = Url {
         url: handler.server_data.update_url.clone(),
