@@ -4,6 +4,7 @@ use rconn::server::{
     serde::Serialize,
     serde_json::{to_value, Value},
 };
+use std::path::Path;
 
 #[derive(Serialize)]
 struct Ver {
@@ -19,6 +20,7 @@ struct Info {
 struct Url {
     url: String,
     hash: String,
+    name: String,
 }
 
 pub fn par_ver(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
@@ -48,10 +50,18 @@ pub fn par_info(req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
 }
 
 pub fn par_url(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
+    let path = handler.server_data.update_url.clone();
+    let path = Path::new(&path);
+    let name = match path.file_name() {
+        Some(s) => String::from(s),
+        Err(_) => return Err(()),
+    };
     let data = Url {
         url: handler.server_data.update_url.clone(),
         hash: handler.server_data.update_hash.clone(),
+        name,
     };
+
     match to_value(data) {
         Ok(v) => Ok(v),
         Err(_) => Err(()),
