@@ -48,7 +48,7 @@ struct ResponseData {
 impl RHandle for MainHandler {
     fn handle(&mut self, tcp: &mut TcpStream, json_data: &Value, custom_data: &Vec<u8>) {
         let peer_addr = tcp.peer_addr().unwrap();
-        info!("{} Start handle", peer_addr.to_string());
+        debug!("{} Start handle", peer_addr.to_string());
 
         let cry: CryptoData = if let Ok(r) = from_value(json_data.clone()) {
             r
@@ -111,6 +111,6 @@ impl RHandle for MainHandler {
             }
         };
         Server::send_data(tcp, resp, &custom);
-        info!("{} Finish handle", peer_addr.to_string());
+        debug!("{} Finish handle", peer_addr.to_string());
     }
 }
