@@ -1,5 +1,4 @@
 /target
 /.idea
 /data
-Cargo.lock
 /src/handlers/main_handler/key.rs
