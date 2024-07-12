@@ -20,9 +20,13 @@ fn main() -> Result<(), ()> {
     imloginit(LevelFilter::Info);
     #[cfg(not(debug_assertions))]
     let mut server = Server::new("0.0.0.0:11289", 5);
-    server.set_matcher(&matcher);
     info!("Server Started...");
-    server.set_timeout(Some(Duration::from_secs(5))).start();
+    server
+        .set_matcher(&matcher)
+        .set_timeout(Some(Duration::from_secs(5)))
+        .set_max_stream_header_size(4 * 1024)
+        .set_max_stream_size(1024 * 1024)
+        .start();
 
     Ok(())
 }
