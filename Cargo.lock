@@ -261,9 +261,9 @@ dependencies = [
 
 [[package]]
 name = "imlogger"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2a593cbf2e3e09da5d7bf45d15116d233dfbbf4a8dd000da4ce6027bd7b1c08"
+checksum = "6377bd4231797802cbe2329a1fbc47ba093c6c25e2780d10ccff82c71a23f723"
 dependencies = [
  "chrono",
  "log",
