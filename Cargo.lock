@@ -60,7 +60,7 @@ checksum = "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0"
 
 [[package]]
 name = "bd_server"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "aes-gcm",
  "hex",
@@ -89,9 +89,9 @@ checksum = "79296716171880943b8470b5f8d03aa55eb2e645a4874bdbb28adb49162e012c"
 
 [[package]]
 name = "cc"
-version = "1.1.1"
+version = "1.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "907d8581360765417f8f2e0e7d602733bbed60156b4465b7617243689ef9b83d"
+checksum = "324c74f2155653c90b04f25b2a47a8a631360cb908f92a772695f430c7e31052"
 
 [[package]]
 name = "cfg-if"
@@ -414,9 +414,9 @@ dependencies = [
 
 [[package]]
 name = "rconn"
-version = "0.3.7"
+version = "0.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4b545aa14dcc2f0cf29d276e500354cafb739e1e4fb3df89327fe8eff72ff1d0"
+checksum = "7b2f0467d11708e01b94ee76c293480b9fc51257b1f92e12ebe2a9ba5c9ff6a4"
 dependencies = [
  "log",
  "once_cell",
