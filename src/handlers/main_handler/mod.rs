@@ -8,6 +8,7 @@ use rconn::server::{
     serde_json::{from_value, Value},
     Server,
 };
+use std::collections::HashMap;
 use std::net::{Shutdown, TcpStream};
 
 mod crypto;
@@ -16,14 +17,23 @@ mod parsers;
 
 pub struct MainHandler {
     server_data: ServerData,
+    par_map: HashMap<String, ParFunc>,
 }
 
 rhandle_impl_new!(MainHandler);
 
+type ParFunc = fn(&RequestData, &MainHandler) -> Result<Value, ()>;
+
 impl Default for MainHandler {
     fn default() -> Self {
+        let mut par_map: HashMap<String, ParFunc> = HashMap::new();
+        par_map.insert(String::from("ver"), parsers::par_ver);
+        par_map.insert(String::from("info"), parsers::par_info);
+        par_map.insert(String::from("url"), parsers::par_url);
+
         MainHandler {
             server_data: ServerData::load(),
+            par_map,
         }
     }
 }
@@ -73,11 +83,9 @@ impl RHandle for MainHandler {
             req.act,
             req.ver
         );
-        let par_func: fn(&RequestData, &MainHandler) -> Result<Value, ()> = match req.act.as_str() {
-            "ver" => parsers::par_ver,
-            "info" => parsers::par_info,
-            "url" => parsers::par_url,
-            _ => {
+        let par_func = match self.par_map.get(&req.act) {
+            Some(par_func) => par_func,
+            None => {
                 tcp.shutdown(Shutdown::Both).ok();
                 return;
             }
