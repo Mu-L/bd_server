@@ -3,7 +3,7 @@ use super::RequestData;
 use aes_gcm::aead::{Aead, KeyInit};
 use aes_gcm::{Aes128Gcm, Key};
 use imlogger::*;
-use rand::{thread_rng, Rng};
+use rand::{rng, Rng};
 use rconn::server::serde_json::from_str;
 use sha2::{Digest, Sha256};
 
@@ -61,10 +61,10 @@ pub fn encrypt(data: &Vec<u8>) -> Result<(Vec<u8>, String), ()> {
 }
 
 fn gen_key() -> [u8; 32] {
-    let mut rng = thread_rng();
+    let mut rng = rng();
     let mut arr = [0u8; 32];
     for i in 0..32 {
-        arr[i] = rng.gen_range(65u8..(65u8 + 25u8));
+        arr[i] = rng.random_range(65u8..(65u8 + 25u8));
     }
     arr
 }
