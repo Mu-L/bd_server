@@ -6,6 +6,7 @@ pub struct ServerData {
     pub update_info: String,
     pub update_url: String,
     pub update_hash: String,
+    pub update_hash_type: String,
 }
 
 impl ServerData {
@@ -30,11 +31,21 @@ impl ServerData {
         let mut update_hash = String::new();
         fp_hash.read_to_string(&mut update_hash).unwrap();
 
+        let update_hash_type = match update_hash.find(' ') {
+            Some(pos) => {
+                let ret = String::from(&update_hash[..pos]);
+                update_hash = update_hash[(pos + 1)..].to_string();
+                ret
+            }
+            None => String::from("md5"),
+        };
+
         ServerData {
             ver,
             update_info,
             update_url,
             update_hash,
+            update_hash_type,
         }
     }
 }

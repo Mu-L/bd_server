@@ -20,6 +20,7 @@ struct Info {
 struct Url {
     url: String,
     hash: String,
+    hash_type: String,
     name: String,
 }
 
@@ -62,6 +63,7 @@ pub fn par_url(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
     let data = Url {
         url: handler.server_data.update_url.clone(),
         hash: handler.server_data.update_hash.clone(),
+        hash_type: handler.server_data.update_hash_type.clone(),
         name,
     };
 
