@@ -14,6 +14,7 @@ use std::net::{Shutdown, TcpStream};
 mod crypto;
 mod key;
 mod parsers;
+mod test;
 
 pub struct MainHandler {
     server_data: ServerData,

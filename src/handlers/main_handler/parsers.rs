@@ -24,6 +24,67 @@ struct Url {
     name: String,
 }
 
+fn split_num(a: &String) -> Result<(u32, u32, u32), ()> {
+    let mut p = if let Some(p) = a.find('.') {
+        p
+    } else {
+        return Err(());
+    };
+    let (an, mut sn) = a.split_at(p);
+    sn = sn.split_at(1).1;
+    let an: u32 = if let Ok(r) = an.parse() {
+        r
+    } else {
+        return Err(());
+    };
+    p = if let Some(p) = sn.find('.') {
+        p
+    } else {
+        return Err(());
+    };
+    let (bn, mut sn) = sn.split_at(p);
+    sn = sn.split_at(1).1;
+    let bn: u32 = if let Ok(r) = bn.parse() {
+        r
+    } else {
+        return Err(());
+    };
+    let cn: u32 = if let Ok(r) = sn.parse() {
+        r
+    } else {
+        return Err(());
+    };
+    Ok((an, bn, cn))
+}
+
+/// Return true if a greater than b
+pub fn version_greater(a: String, b: String) -> bool {
+    let (a1, a2, a3) = if let Ok(r) = split_num(&a) {
+        r
+    } else {
+        return false;
+    };
+    let (b1, b2, b3) = if let Ok(r) = split_num(&b) {
+        r
+    } else {
+        return false;
+    };
+    if a1 > b1 {
+        return true;
+    } else if a1 < b1 {
+        return false;
+    }
+    if a2 > b2 {
+        return true;
+    } else if a2 < b2 {
+        return false;
+    }
+    if a3 > b3 {
+        return true;
+    }
+    false
+}
+
 pub fn par_ver(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
     let data = Ver {
         ver: handler.server_data.ver.clone(),
@@ -60,10 +121,19 @@ pub fn par_url(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
         }),
         None => return Err(()),
     };
+    let hash;
+    let hash_type;
+    if version_greater(_req.ver.clone(), "1.3.5".to_string()) {
+        hash = handler.server_data.update_hash_sha256.clone();
+        hash_type = "sha256".to_string();
+    } else {
+        hash = handler.server_data.update_hash_md5.clone();
+        hash_type = "md5".to_string();
+    }
     let data = Url {
         url: handler.server_data.update_url.clone(),
-        hash: handler.server_data.update_hash.clone(),
-        hash_type: handler.server_data.update_hash_type.clone(),
+        hash,
+        hash_type,
         name,
     };
 
