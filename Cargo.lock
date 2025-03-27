@@ -95,7 +95,6 @@ dependencies = [
  "aes-gcm",
  "hex",
  "imlogger",
- "log",
  "rand",
  "rconn",
  "serde",
