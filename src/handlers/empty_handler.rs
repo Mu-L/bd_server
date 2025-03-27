@@ -1,5 +1,4 @@
-use rconn::conn::{Arc, Mutex, RHandle, THandle};
-use rconn::rhandle_impl_new;
+use rconn::prelude::*;
 use rconn::server::serde_json::Value;
 use std::net::{Shutdown, TcpStream};
 

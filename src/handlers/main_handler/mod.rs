@@ -1,20 +1,15 @@
 use crate::server::ServerData;
 use imlogger::*;
-use rconn::conn::{Arc, Mutex, RHandle, THandle};
-use rconn::rhandle_impl_new;
-use rconn::serde_json::to_string;
-use rconn::server::{
-    serde::{Deserialize, Serialize},
-    serde_json::{from_value, Value},
-    Server,
-};
+use rconn::prelude::*;
+use serde::{Deserialize, Serialize};
+use serde_json::{from_value, to_string, Value};
 use std::collections::HashMap;
 use std::net::{Shutdown, TcpStream};
 
+mod check_version;
 mod crypto;
 mod key;
 mod parsers;
-mod test;
 
 pub struct MainHandler {
     server_data: ServerData,

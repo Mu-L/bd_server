@@ -1,12 +1,12 @@
 [package]
 name = "bd_server"
-version = "0.2.9"
+version = "0.2.10"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rconn = "0.3"
+rconn = "0.4"
 imlogger = "0.1"
 sha2 = "0.10"
 aes-gcm = "0.10"

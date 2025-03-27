@@ -1,7 +1,6 @@
 use bd_server::handlers;
 use imlogger::*;
-use rconn::conn::{RConnection, THandle};
-use rconn::server::Server;
+use rconn::prelude::*;
 use std::time::Duration;
 
 fn matcher(act: &str) -> THandle {
