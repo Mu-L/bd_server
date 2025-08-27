@@ -1,47 +1,42 @@
+use rconn::server::serde::Deserialize;
+use rconn::server::serde_json::from_str;
 use std::fs::File;
 use std::io::Read;
 
-pub struct ServerData {
+#[derive(Deserialize)]
+pub struct UpdateHash {
+    pub md5: String,
+    pub sha256: String,
+}
+
+#[derive(Deserialize)]
+pub struct JsonConfig {
     pub ver: String,
+    pub url: String,
+    pub info_path: String,
+    pub hash: UpdateHash,
+}
+
+pub struct ServerData {
     pub update_info: String,
-    pub update_url: String,
-    pub update_hash_md5: String,
-    pub update_hash_sha256: String,
+    pub json_data: JsonConfig,
 }
 
 impl ServerData {
     pub fn load() -> Self {
-        // Load ver
-        let mut fp_ver = File::open("data/ver").unwrap();
-        let mut ver = String::new();
-        fp_ver.read_to_string(&mut ver).unwrap();
+        let mut fp_json = File::open("data/config.json").unwrap();
+        let mut json_data = String::new();
+        fp_json.read_to_string(&mut json_data).unwrap();
+        let json_data: JsonConfig = from_str(&json_data).unwrap();
 
         // Load Info
-        let mut fp_info = File::open("data/updateInfo").unwrap();
+        let mut fp_info = File::open(json_data.info_path.clone()).unwrap();
         let mut update_info = String::new();
         fp_info.read_to_string(&mut update_info).unwrap();
 
-        // Load url
-        let mut fp_url = File::open("data/updateUrl").unwrap();
-        let mut update_url = String::new();
-        fp_url.read_to_string(&mut update_url).unwrap();
-
-        // Load Hash md5
-        let mut fp_hash = File::open("data/updateHash").unwrap();
-        let mut update_hash_md5 = String::new();
-        fp_hash.read_to_string(&mut update_hash_md5).unwrap();
-
-        // Load Hash sha256
-        let mut fp_hash = File::open("data/updateHashSha256").unwrap();
-        let mut update_hash_sha256 = String::new();
-        fp_hash.read_to_string(&mut update_hash_sha256).unwrap();
-
         ServerData {
-            ver,
+            json_data,
             update_info,
-            update_url,
-            update_hash_md5,
-            update_hash_sha256,
         }
     }
 }

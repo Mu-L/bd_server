@@ -27,7 +27,7 @@ struct Url {
 
 pub fn par_ver(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
     let data = Ver {
-        ver: handler.server_data.ver.clone(),
+        ver: handler.server_data.json_data.ver.clone(),
     };
     match to_value(data) {
         Ok(v) => Ok(v),
@@ -52,7 +52,7 @@ pub fn par_info(req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
 }
 
 pub fn par_url(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
-    let path = handler.server_data.update_url.clone();
+    let path = handler.server_data.json_data.url.clone();
     let path = Path::new(&path);
     let name = match path.file_name() {
         Some(s) => String::from(match s.to_str() {
@@ -64,14 +64,14 @@ pub fn par_url(_req: &RequestData, handler: &MainHandler) -> Result<Value, ()> {
     let hash;
     let hash_type;
     if version_greater(_req.ver.clone(), "1.3.5".to_string()) {
-        hash = handler.server_data.update_hash_sha256.clone();
+        hash = handler.server_data.json_data.hash.sha256.clone();
         hash_type = "sha256".to_string();
     } else {
-        hash = handler.server_data.update_hash_md5.clone();
+        hash = handler.server_data.json_data.hash.md5.clone();
         hash_type = "md5".to_string();
     }
     let data = Url {
-        url: handler.server_data.update_url.clone(),
+        url: handler.server_data.json_data.url.clone(),
         hash,
         hash_type,
         name,
